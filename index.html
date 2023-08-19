@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Quotes</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="inner">
+        <div class="box">
+          <div class="mode-toggle">
+            <label class="switch">
+              <input type="checkbox" id="darkModeToggle" />
+              <span class="slider"></span>
+            </label>
+          </div>
+          <div class="text">
+            <p id="quotes" class="quotes"></p>
+            <p id="author" class="author"></p>
+            <div class="font">
+              <button id="increaseFontSize">+</button>
+              <button id="decreaseFontSize">-</button>
+            </div>
+          </div>
+          <div class="button">
+            <button id="prevQuote">Previous</button>
+            <button id="newQuote">Random</button>
+            <button id="nextQuote">Next</button>
+          </div>
+        </div>
+        <div class="option">
+          <label class="add">Select Category</label>
+          <select id="category">
+            <option value="all">All Categories</option>
+            <option value="Humor">Humor</option>
+            <option value="Wisdom">Wisdom</option>
+            <option value="Motivational">Motivational</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <script>
+      let realData = [
+        {
+          text: "A day without sunshine is like, you know, night.",
+          author: "Steve Martin",
+          category: "Humor",
+        },
+        {
+          text: "My fake plants died because I did not pretend to water them.",
+          author: "Mitch Hedberg",
+          category: "Humor",
+        },
+        {
+          text: "Everything is funny, as long as it's happening to somebody else.",
+          author: "Will Rogers",
+          category: "Humor",
+        },
+        {
+          text: "I'm sorry, if you were right, I'd agree with you.",
+          author: "Robin Williams",
+          category: "Humor",
+        },
+        {
+          text: "I can resist everything except temptation.",
+          author: "Oscar Wilde",
+          category: "Humor",
+        },
+        {
+          text: "Between two evils, I always pick the one I never tried before.",
+          author: "Mae West",
+          category: "Humor",
+        },
+        {
+          text: "I like long walks, especially when they are taken by people who annoy me.",
+          author: "Fred Allen",
+          category: "Humor",
+        },
+        {
+          text: "I knew I was an unwanted baby when I saw that my bath toys were a toaster and a radio.",
+          author: "Joan Rivers",
+          category: "Humor",
+        },
+        {
+          text: "You can lead a man to Congress, but you can't make him think.",
+          author: "Milton Berle",
+          category: "Humor",
+        },
+        {
+          text: "I distrust camels, and anyone else who can go a week without a drink.",
+          author: "Joe E. Lewis",
+          category: "Humor",
+        },
+        {
+          text: "We are addicted to our thoughts. We cannot change anything if we cannot change our thinking.",
+          author: "Santosh Kalwar",
+          category: "Wisdom",
+        },
+        {
+          text: "The past has no power over the present moment.",
+          author: "Eckhart Tolle",
+          category: "Wisdom",
+        },
+        {
+          text: "There is nothing either good or bad, but thinking makes it so.",
+          author: "William Shakespeare",
+          category: "Wisdom",
+        },
+        {
+          text: "Your up and down emotions are like clouds in the sky, beyond them, the real, basic human nature is clear and pure.",
+          author: "Lama Zopa Rinpoche",
+          category: "Wisdom",
+        },
+        {
+          text: "Life isn't about finding yourself. Life is about creating yourself.",
+          author: "George Bernard Shaw",
+          category: "Wisdom",
+        },
+        {
+          text: "The saddest aspect of life right now is that science gathers knowledge faster than society gathers wisdom.",
+          author: "Isaac Asimov",
+          category: "Wisdom",
+        },
+        {
+          text: "Whatever the cost of our libraries, the price is cheap compared to that of an ignorant nation.",
+          author: "Walter Cronkite",
+          category: "Wisdom",
+        },
+        {
+          text: "Everything you can imagine is real.",
+          author: "Pablo Picasso",
+          category: "Wisdom",
+        },
+        {
+          text: "If you want others to be happy, practice compassion. If you want to be happy, practice compassion.",
+          author: "Dalai Lama",
+          category: "Wisdom",
+        },
+        {
+          text: "Science is organized knowledge. Wisdom is organized life.",
+          author: "Immanuel Kant",
+          category: "Wisdom",
+        },
+        {
+          text: "Success is not final, failure is not fatal: it is the courage to continue that counts.",
+          author: "Winston S. Churchill",
+          category: "Motivational",
+        },
+        {
+          text: "Life is 10% what happens to you and 90% how you react to it.",
+          author: "Charles R. Swindoll",
+          category: "Motivational",
+        },
+        {
+          text: "Setting goals is the first step in turning the invisible into the visible.",
+          author: "Tony Robbins ",
+          category: "Motivational",
+        },
+        {
+          text: "Problems are not stop signs, they are guidelines.",
+          author: "Robert H. Schuller",
+          category: "Motivational",
+        },
+        {
+          text: "You are never too old to set another goal or to dream a new dream.",
+          author: "Les Brown",
+          category: "Motivational",
+        },
+        {
+          text: "Do you want to know who you are? Don't ask. Act! Action will delineate and define you.",
+          author: "Thomas Jefferson",
+          category: "Motivational",
+        },
+        {
+          text: "I'd rather attempt to do something great and fail than to attempt to do nothing and succeed.",
+          author: "Robert H. Schuller",
+          category: "Motivational",
+        },
+        {
+          text: "Put your heart, mind, and soul into even your smallest acts. This is the secret of success.",
+          author: "Swami Sivananda",
+          category: "Motivational",
+        },
+        {
+          text: "Success is a journey, not a destination. The doing is often more important than the outcome.",
+          author: "Arthur Ashe",
+          category: "Motivational",
+        },
+        {
+          text: "Quality is not an act, it is a habit.",
+          author: "Aristotle",
+          category: "Motivational",
+        },
+      ];
+      //   let realData = [];
+      let currentQuoteIndex = 0;
+      let currentFontSize = 16;
+      let currentCategory = "all";
+
+      const categorySelect = document.getElementById("category");
+      const quotes = document.getElementById("quotes");
+      const author = document.getElementById("author");
+      const prevQ = document.getElementById("prevQuote");
+      const newQ = document.getElementById("newQuote");
+      const nextQ = document.getElementById("nextQuote");
+      const increaseFontSizeButton =
+        document.getElementById("increaseFontSize");
+      const decreaseFontSizeButton =
+        document.getElementById("decreaseFontSize");
+      const darkModeToggle = document.getElementById("darkModeToggle");
+
+      const updateQuote = (index) => {
+        quotes.innerHTML = `${realData[index].text}`;
+        author.innerHTML = `${realData[index].author}`;
+        console.log(`${realData[index].text}`, "change");
+      };
+
+      const getNewQuotes = () => {
+        const rnum = Math.floor(Math.random() * realData.length);
+        currentQuoteIndex = rnum;
+        updateQuote(currentQuoteIndex);
+      };
+
+      const showPreviousQuote = () => {
+        currentQuoteIndex =
+          (currentQuoteIndex - 1 + realData.length) % realData.length;
+        updateQuote(currentQuoteIndex);
+      };
+
+      const showNextQuote = () => {
+        currentQuoteIndex = (currentQuoteIndex + 1) % realData.length;
+        updateQuote(currentQuoteIndex);
+      };
+      let filteredQuotes = realData;
+
+      const filterQuotesByCategory = (category) => {
+        if (category === "all") {
+          return realData;
+        } else {
+          return realData.filter((quote) => quote.category === category);
+        }
+      };
+      const updateFontSize = () => {
+        quotes.style.fontSize = `${currentFontSize}px`;
+        author.style.fontSize = `${currentFontSize}px`;
+      };
+
+      const decreaseFontSize = () => {
+        if (currentFontSize > 12) {
+          currentFontSize -= 2;
+          updateFontSize();
+        }
+      };
+
+      const increaseFontSize = () => {
+        if (currentFontSize < 24) {
+          currentFontSize += 2;
+          updateFontSize();
+        }
+      };
+
+      const enableDarkMode = () => {
+        document.body.classList.add("dark-mode");
+      };
+
+      const disableDarkMode = () => {
+        document.body.classList.remove("dark-mode");
+      };
+
+      darkModeToggle.addEventListener("change", () => {
+        if (darkModeToggle.checked) {
+          enableDarkMode();
+        } else {
+          disableDarkMode();
+        }
+      });
+
+      categorySelect.addEventListener("change", () => {
+        const selectedCategory = categorySelect.value;
+        const filteredQuotes = filterQuotesByCategory(selectedCategory);
+
+        if (filteredQuotes.length > 0) {
+          currentCategory = selectedCategory;
+          currentQuoteIndex = 0;
+          realData = filteredQuotes;
+          updateQuote(currentQuoteIndex);
+        }
+      });
+
+      increaseFontSizeButton.addEventListener("click", increaseFontSize);
+      decreaseFontSizeButton.addEventListener("click", decreaseFontSize);
+      prevQ.addEventListener("click", showPreviousQuote);
+      newQ.addEventListener("click", getNewQuotes);
+      nextQ.addEventListener("click", showNextQuote);
+      getNewQuotes();
+      // getQuotes();
+    </script>
+  </body>
+</html>
